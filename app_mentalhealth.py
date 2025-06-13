@@ -189,7 +189,7 @@ def create_visualizations():
 # Header aplikasi dengan warna tema
 st.markdown("""
 <h1 style='text-align: center; color: #FF7F50;'>🧠 Know Your Mental Health 🧠</h1>
-<p style='text-align: center; font-size: 18px; color: #D2691E;'>Aplikasi berbasis AI untuk analisis kesehatan mental mahasiswa</p>
+<p style='text-align: center; font-size: 18px; color: #D2691E;'>Aplikasi berbasis AI yang memberikan rekomendasi aktivitas positif untuk menjaga kesehatan mental.</p>
 <p style='text-align: center; font-size: 16px;'>Silakan isi semua field pada sidebar di samping dengan input angka yang sesuai.</p>
 """, unsafe_allow_html=True)
 
