@@ -88,7 +88,7 @@ def load_model():
 @st.cache_data
 def load_dataset():
     try:
-        df = pd.read_csv("datasets/Student Lifestyle and Mental Health.csv")
+        df = pd.read_csv("Student Lifestyle and Mental Health.csv")
         return df
     except FileNotFoundError:
         st.error("File dataset tidak ditemukan.")
