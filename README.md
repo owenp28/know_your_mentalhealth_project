@@ -72,4 +72,4 @@ Aplikasi ini menggunakan dataset "Student Lifestyle and Mental Health" yang beri
 - Pandas
 - Matplotlib & Seaborn
 - Scikit-learn
-- XGBoost/Random Forest/KNN
+- XGBoost
