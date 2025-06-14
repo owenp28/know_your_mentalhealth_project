@@ -64,23 +64,9 @@ st.markdown("""
 
 @st.cache_resource
 def load_model():
-    try:
         with open("best_model_xgb.pkl", "rb") as f:
             xgb, accuracy_xgb, prec_xgb, rec_xgb, f1_xgb = pickle.load(f)
             return xgb, accuracy_xgb, "XGBoost", prec_xgb, rec_xgb, f1_xgb
-    except FileNotFoundError:
-        try:
-            with open("best_model_rf.pkl", "rb") as f:
-                rf, accuracy_rf, prec_rf, rec_rf, f1_rf = pickle.load(f)
-                return rf, accuracy_rf, "Random Forest", prec_rf, rec_rf, f1_rf
-        except FileNotFoundError:
-            try:
-                with open("best_model_knn.pkl", "rb") as f:
-                    knn, accuracy_knn, prec_knn, rec_knn, f1_knn = pickle.load(f)
-                    return knn, accuracy_knn, "KNN", prec_knn, rec_knn, f1_knn
-            except FileNotFoundError:
-                st.error("Tidak ada model yang ditemukan. Pastikan file model berada di direktori yang sama.")
-                return None, None, None, None, None, None
     except Exception as e:
         st.error(f"Terjadi kesalahan saat memuat model: {e}")
         return None, None, None, None, None, None
