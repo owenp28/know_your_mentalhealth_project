@@ -67,9 +67,6 @@ def load_model():
         with open("best_model_xgb.pkl", "rb") as f:
             xgb, accuracy_xgb, prec_xgb, rec_xgb, f1_xgb = pickle.load(f)
             return xgb, accuracy_xgb, "XGBoost", prec_xgb, rec_xgb, f1_xgb
-    except Exception as e:
-        st.error(f"Terjadi kesalahan saat memuat model: {e}")
-        return None, None, None, None, None, None
 
 @st.cache_data
 def load_dataset():
