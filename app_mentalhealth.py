@@ -73,15 +73,8 @@ def load_model():
 
 @st.cache_data
 def load_dataset():
-    try:
         df = pd.read_csv("Student Lifestyle and Mental Health.csv")
         return df
-    except FileNotFoundError:
-        st.error("File dataset tidak ditemukan.")
-        return None
-    except Exception as e:
-        st.error(f"Terjadi kesalahan saat memuat dataset: {e}")
-        return None
 
 model, model_accuracy, model_name, precision, recall, f1 = load_model()
 dataset = load_dataset()
