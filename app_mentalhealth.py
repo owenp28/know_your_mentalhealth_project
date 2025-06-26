@@ -7,7 +7,7 @@ import pickle
 
 # Konfigurasi halaman dengan tema yang konsisten
 st.set_page_config(
-    page_title="Know Your Mental Health - Analisis Kesehatan Mental Mahasiswa",
+    page_title="Know Your Mental Health - Student Mental Health Analysis",
     page_icon="🧠",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -121,32 +121,33 @@ def preprocess_and_predict(study_hours, extracurricular_hours, sleep_hours, soci
 
         return prediction[0], probability
     except Exception as e:
-        print(f"Terjadi kesalahan saat prediksi: {e}")
+        print(f"An error occurred during the prediction process: {e}")
         return None, None
 
 def create_visualizations():
     if dataset is None:
         return
 
-    st.subheader("📊 Visualisasi Data Kesehatan Mental Mahasiswa")
+    st.subheader("📊 Student Mental Health Data Visualization")
 
     # Menggunakan warna yang konsisten dengan tema UI
     palettes = ["Blues", "Purples", "RdPu"]
     
     visual_list = [
-        ("Study Hours", "Grades", "Stress Level", palettes[0], "Nilai Akademik vs Jam Belajar per Tingkat Stres",
-         "Semakin banyak jam belajar, nilai akademik cenderung meningkat, namun tingkat stres juga bisa meningkat jika jam belajar berlebihan."),
-        ("Sleep Hours", "Grades", "Stress Level", palettes[1], "Nilai Akademik vs Jam Tidur per Tingkat Stres",
-         "Jam tidur yang cukup berkorelasi dengan nilai akademik yang baik dan tingkat stres yang lebih rendah."),
-        ("Physical Activity Hours", "Grades", "Stress Level", palettes[2], "Nilai Akademik vs Aktivitas Fisik per Tingkat Stres",
-         "Aktivitas fisik yang rutin dapat membantu menurunkan tingkat stres dan menjaga performa akademik."),
-        ("Social Hours", "Grades", "Stress Level", "mako", "Nilai Akademik vs Jam Sosialisasi per Tingkat Stres",
-         "Sosialisasi yang seimbang penting untuk kesehatan mental, namun terlalu banyak dapat mengganggu waktu belajar."),
-        ("Extracurricular Hours", "Grades", "Stress Level", "icefire", "Nilai Akademik vs Ekstrakurikuler per Tingkat Stres",
-         "Kegiatan ekstrakurikuler dapat membantu mengurangi stres jika tidak berlebihan."),
-        ("Study Hours", "Sleep Hours", "Stress Level", "Spectral", "Jam Tidur vs Jam Belajar per Tingkat Stres",
-         "Keseimbangan antara jam belajar dan jam tidur penting untuk menjaga tingkat stres tetap rendah.")
+    ("Study Hours", "Grades", "Stress Level", palettes[0], "Academic Performance vs Study Hours per Stress Level",
+     "Increased study hours generally correlate with higher academic performance, but excessive study hours can also lead to increased stress levels."),
+    ("Sleep Hours", "Grades", "Stress Level", palettes[1], "Academic Performance vs Sleep Hours per Stress Level",
+     "Adequate sleep hours are associated with better academic performance and lower stress levels."),
+    ("Physical Activity Hours", "Grades", "Stress Level", palettes[2], "Academic Performance vs Physical Activity per Stress Level",
+     "Regular physical activity can help reduce stress levels and maintain academic performance."),
+    ("Social Hours", "Grades", "Stress Level", "mako", "Academic Performance vs Socializing Hours per Stress Level",
+     "Balanced socializing is important for mental health, but excessive socializing can interfere with study time."),
+    ("Extracurricular Hours", "Grades", "Stress Level", "icefire", "Academic Performance vs Extracurricular Activities per Stress Level",
+     "Extracurricular activities can help reduce stress if not overdone."),
+    ("Study Hours", "Sleep Hours", "Stress Level", "Spectral", "Sleep Hours vs Study Hours per Stress Level",
+     "Balancing study hours and sleep is crucial for keeping stress levels low.")
     ]
+
 
     # Tampilkan visualisasi dalam 3 kolom untuk simetri
     cols = st.columns(3)
@@ -165,41 +166,41 @@ def create_visualizations():
 # Header aplikasi dengan warna tema
 st.markdown("""
 <h1 style='text-align: center; color: #FF7F50;'>🧠 Know Your Mental Health 🧠</h1>
-<p style='text-align: center; font-size: 18px; color: #D2691E;'>Aplikasi berbasis AI yang memberikan rekomendasi aktivitas positif untuk menjaga kesehatan mental.</p>
-<p style='text-align: center; font-size: 16px;'>Silakan isi semua field pada sidebar di samping dengan input angka yang sesuai.</p>
+<p style='text-align: center; font-size: 18px; color: #D2691E;'>An AI-based application that provides recommendations for positive activities to maintain mental health.</p>
+<p style='text-align: center; font-size: 16px;'>Please fill in all the fields in the sidebar with the appropriate numerical inputs.</p>
 """, unsafe_allow_html=True)
 
 if model_accuracy:
-    st.info(f"Model {model_name} digunakan dengan akurasi {model_accuracy:.2f}%, presisi {precision:.2f}%, recall {recall:.2f}%, dan F1-score {f1:.2f}%")
+    st.info(f"The {model_name} model is used with an accuracy of {model_accuracy:.2f}%, precision of {precision:.2f}%, recall of {recall:.2f}%, and an F1-score of {f1:.2f}%.")
 
 if not model and not model_accuracy:
-    st.sidebar.error("Model tidak dapat dimuat. Fungsi prediksi tidak akan berjalan.")
+    st.sidebar.error("The model could not be loaded. The prediction function will not run.")
 
 # Sidebar untuk input dengan layout yang simetris
 with st.sidebar:
-    st.markdown("<h3 style='color: #FFFFFF;'>👤 Data Diri & Gaya Hidup</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 style='color: #FFFFFF;'>👤Personal Data & Lifestyle</h3>", unsafe_allow_html=True)
     
     # Gunakan container untuk memastikan simetri
     with st.container():
-        study_hours = st.number_input("Jam Belajar per Hari", min_value=0.0, max_value=24.0, value=7.0, step=0.5)
-        extracurricular_hours = st.number_input("Jam Ekstrakurikuler per Hari", min_value=0.0, max_value=24.0, value=2.0, step=0.5)
-        sleep_hours = st.number_input("Jam Tidur per Hari", min_value=0.0, max_value=24.0, value=7.0, step=0.5)
-        social_hours = st.number_input("Jam Sosialisasi per Hari", min_value=0.0, max_value=24.0, value=3.0, step=0.5)
-        physical_activity_hours = st.number_input("Jam Aktivitas Fisik per Hari", min_value=0.0, max_value=24.0, value=2.0, step=0.5)
+        study_hours = st.number_input("Study Hours per Day", min_value=0.0, max_value=24.0, value=7.0, step=0.5)
+        extracurricular_hours = st.number_input("Extracurricular Hours per Day", min_value=0.0, max_value=24.0, value=2.0, step=0.5)
+        sleep_hours = st.number_input("Sleep Hours per Day", min_value=0.0, max_value=24.0, value=7.0, step=0.5)
+        social_hours = st.number_input("Socializing Hours per Day", min_value=0.0, max_value=24.0, value=3.0, step=0.5)
+        physical_activity_hours = st.number_input("Physical Activity Hours per Day", min_value=0.0, max_value=24.0, value=2.0, step=0.5)
         
         st.markdown("<br>", unsafe_allow_html=True)
-        gender_options = {"Laki-laki": 1, "Perempuan": 0}
-        gender = st.selectbox("Jenis Kelamin", options=list(gender_options.keys()), index=0)
+        gender_options = {"Male": 1, "Female": 0}
+        gender = st.selectbox("Gender", options=list(gender_options.keys()), index=0)
         gender_val = gender_options[gender]
     
     # Tombol prediksi dengan warna tema
-    predict_button = st.button("🧠 Prediksi Tingkat Stres Saya!", use_container_width=True)
+    predict_button = st.button("🧠Predict My Stress Level!", use_container_width=True)
 
 # Proses prediksi
 if predict_button and model:
     st.markdown("---")
     
-    with st.spinner('Menganalisis data Anda...'):
+    with st.spinner('Analyzing your data...'):
         prediction_result, prediction_proba = preprocess_and_predict(
             study_hours, extracurricular_hours, sleep_hours, social_hours, physical_activity_hours, gender_val
         )
@@ -228,15 +229,15 @@ if predict_button and model:
             with col2:
                 # Tampilkan hasil dengan warna yang sesuai
                 if hasil_teks == "High":
-                    st.error("### Tingkat Stres Anda: HIGH")
+                    st.error("### Your Stress Level: HIGH")
                     progress_val = 0.9
                     color = "#FF5252"
                 elif hasil_teks == "Moderate":
-                    st.warning("### Tingkat Stres Anda: MODERATE")
+                    st.warning("### Your Stress Level: MODERATE")
                     progress_val = 0.5
                     color = "#FFC107"
                 else:
-                    st.success("### Tingkat Stres Anda: LOW")
+                    st.success("### Your Stress Level: LOW")
                     progress_val = 0.2
                     color = "#4CAF50"
                 
@@ -255,57 +256,57 @@ if predict_button and model:
                         except (ValueError, IndexError):
                             prob_val = 0.0
                     
-                    st.markdown(f"<p style='text-align: center; font-size: 16px;'>Tingkat kepercayaan: <strong>{prob_val:.2f}</strong></p>", unsafe_allow_html=True)
+                    st.markdown(f"<p style='text-align: center; font-size: 16px;'>Confidence level: <strong>{prob_val:.2f}</strong></p>", unsafe_allow_html=True)
 
         st.markdown("---")
         
         # Data pengguna dalam layout yang simetris
-        st.subheader("📝 Data Anda")
+        st.subheader("📝 Your Data")
         
         col_left, col_right = st.columns(2)
         
         with col_left:
             st.markdown(f"""
-            - **Jam Belajar:** {study_hours} jam/hari  
-            - **Jam Ekstrakurikuler:** {extracurricular_hours} jam/hari  
-            - **Jam Tidur:** {sleep_hours} jam/hari  
+            - **Study Hours:** {study_hours} hours/day
+            - **Extracurricular Hours** {extracurricular_hours} hours/day
+            - **Sleep Hours:** {sleep_hours} hours/day 
             """)
 
         with col_right:
             st.markdown(f"""
-            - **Jam Sosialisasi:** {social_hours} jam/hari  
-            - **Jam Aktivitas Fisik:** {physical_activity_hours} jam/hari  
-            - **Jenis Kelamin:** {gender}
+            - **Social Hours:** {social_hours} hours/day
+            - **Physical Activity Hours:** {physical_activity_hours} hours/day 
+            - **Gender:** {gender}
             """)
 
         st.markdown("---")
         
         # Saran dan analisis dengan styling yang konsisten
-        st.subheader("💡 Saran & Analisis untuk Anda")
+        st.subheader("💡 Suggestions and Analysis for You")
 
         penjelasan = []
 
         if study_hours > 10:
-            penjelasan.append(f"📚 Anda belajar {study_hours:.1f} jam/hari. Terlalu banyak belajar dapat meningkatkan stres.")
+            penjelasan.append(f"📚You study {study_hours:.1f} hours/day. Excessive studying can increase stress levels.")
         elif study_hours < 5:
-            penjelasan.append(f"📚 Anda hanya belajar {study_hours:.1f} jam/hari. Meningkatkan waktu belajar bisa membantu.")
+            penjelasan.append(f"📚You only study {study_hours:.1f} hours/day. Increasing your study time might be beneficial.")
 
         if sleep_hours < 7:
-            penjelasan.append("🌙 Anda tidur kurang dari 7 jam per hari. Kurang tidur meningkatkan stres.")
+            penjelasan.append("🌙You sleep less than 7 hours per day. Insufficient sleep can increase stress levels.")
         elif sleep_hours > 10:
-            penjelasan.append("🛌 Tidur lebih dari 10 jam bisa jadi tanda stres atau depresi.")
+            penjelasan.append("🛌Sleeping more than 10 hours a day can be a sign of stress or depression.")
 
         if physical_activity_hours < 1:
-            penjelasan.append("🏃‍♂️ Aktivitas fisik Anda rendah. Olahraga bisa membantu menurunkan stres.")
+            penjelasan.append("🏃‍♂Your physical activity level is low. Exercise can help reduce stress.")
 
         if social_hours < 1:
-            penjelasan.append("👥 Waktu sosialisasi Anda sangat rendah. Interaksi sosial penting untuk kesehatan mental.")
+            penjelasan.append("👥Your socializing time is very low. Social interactions are important for mental health.")
         elif social_hours > 6:
-            penjelasan.append("👥 Sosialisasi Anda tinggi. Pastikan tidak mengganggu waktu belajar atau tidur.")
+            penjelasan.append("👥Your socializing time is high. Ensure it does not interfere with your study or sleep time.")
 
         total_hours = study_hours + extracurricular_hours + sleep_hours + social_hours + physical_activity_hours
         if total_hours > 24:
-            penjelasan.append("⏰ Total aktivitas Anda melebihi 24 jam. Prioritaskan aktivitas harian.")
+            penjelasan.append("⏰Your total daily activities exceed 24 hours. Prioritize your daily activities to ensure a balanced schedule.")
 
         # Tampilkan saran dalam card untuk tampilan yang lebih baik
         if penjelasan:
@@ -316,7 +317,7 @@ if predict_button and model:
                 </div>
                 """, unsafe_allow_html=True)
         else:
-            st.success("🎉 Pola hidup Anda tampaknya seimbang. Pertahankan keseimbangan ini!")
+            st.success("🎉Your lifestyle appears to be balanced. Maintain this equilibrium to ensure your well-being!")
 
 # Tampilkan visualisasi data
 create_visualizations()
